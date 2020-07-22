@@ -1,9 +1,7 @@
-﻿open Sabermetrics.DataCollection
+﻿open Sabermetrics.WebWorker
+open Sabermetrics.HtmlHandler
+open Sabermetrics.BaseballDataCollector
 [<EntryPoint>]
 let main argv =
-    let html = getBaseballSite |> wrapResonse |> handleResponse
-    match html with
-    | Some text -> printfn "%s" text
-    | None -> printfn "No resulting text. Sorry :/"
-    printfn "Hello World from F#!"
+    printfn "%A" getAllPlayers
     0 // return an integer exit code

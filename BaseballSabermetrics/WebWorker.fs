@@ -1,6 +1,6 @@
 ﻿namespace Sabermetrics
 
-module DataCollection =
+module WebWorker =
     open System
     open System.Net
     open System.Text.RegularExpressions
@@ -10,21 +10,14 @@ module DataCollection =
     | Html of WebResponse
     | Other
     let getSite url =
-        let request = WebRequest.Create (url:Uri) : WebRequest
+        let request = WebRequest.Create (new Uri(url)) : WebRequest
         request.GetResponse()
-        
-    let getBaseballSite =
-        getSite (new Uri(@"https://www.baseball-reference.com/"))
 
     let wrapResonse (response: WebResponse) =
         let isHtml = Regex("html").IsMatch(response.ContentType)
         match isHtml with
         | true -> Html response
         | false -> Other
-
-    let generateLetters first last =
-        [first..last] |> List.map string
-
 
     let handleResponse (response:ResponseWrapper) =
         match response with
