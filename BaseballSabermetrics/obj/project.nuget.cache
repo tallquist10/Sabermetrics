@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "Q18i8kTfDz6tc+EBrqvprOPFZ/e0Eb8SvEa7lVEbTDn3MLlvw3I0G3u4X1qDS6zv5UqH3/0KGvz6XDF8UHxjUA==",
+  "dgSpecHash": "Ef/xqJbAAPrh3oyEHI6KMtQIog8WGUnFww4hi13OSWOpLHynULZm7JFFgvwYyBHe/m5PU8JXBkjNtsux6fH9fg==",
   "success": true,
   "projectFilePath": "C:\\Users\\ctall\\Code Projects\\Visual Studio\\F# Projects\\Sabermetrics\\BaseballSabermetrics\\BaseballSabermetrics.fsproj",
   "expectedPackageFiles": [
     "C:\\Users\\ctall\\.nuget\\packages\\epplus\\4.5.3.3\\epplus.4.5.3.3.nupkg.sha512",
     "C:\\Users\\ctall\\.nuget\\packages\\fsharp.core\\4.7.0\\fsharp.core.4.7.0.nupkg.sha512",
+    "C:\\Users\\ctall\\.nuget\\packages\\fsharp.data\\3.3.3\\fsharp.data.3.3.3.nupkg.sha512",
     "C:\\Users\\ctall\\.nuget\\packages\\microsoft.extensions.configuration\\3.1.0\\microsoft.extensions.configuration.3.1.0.nupkg.sha512",
     "C:\\Users\\ctall\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\3.1.0\\microsoft.extensions.configuration.abstractions.3.1.0.nupkg.sha512",
     "C:\\Users\\ctall\\.nuget\\packages\\microsoft.extensions.configuration.fileextensions\\3.1.0\\microsoft.extensions.configuration.fileextensions.3.1.0.nupkg.sha512",

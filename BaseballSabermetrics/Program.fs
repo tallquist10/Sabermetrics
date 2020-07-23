@@ -3,5 +3,5 @@ open Sabermetrics.HtmlHandler
 open Sabermetrics.BaseballDataCollector
 [<EntryPoint>]
 let main argv =
-    printfn "%A" getAllPlayers
+    printfn "%A" getStatsForAllPlayers
     0 // return an integer exit code

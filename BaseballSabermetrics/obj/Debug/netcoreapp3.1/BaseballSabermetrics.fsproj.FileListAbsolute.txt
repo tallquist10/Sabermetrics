@@ -42,3 +42,4 @@ C:\Users\ctall\Code Projects\Visual Studio\F# Projects\Sabermetrics\BaseballSabe
 C:\Users\ctall\Code Projects\Visual Studio\F# Projects\Sabermetrics\BaseballSabermetrics\obj\Debug\netcoreapp3.1\BaseballSabermetrics.dll
 C:\Users\ctall\Code Projects\Visual Studio\F# Projects\Sabermetrics\BaseballSabermetrics\obj\Debug\netcoreapp3.1\BaseballSabermetrics.pdb
 C:\Users\ctall\Code Projects\Visual Studio\F# Projects\Sabermetrics\BaseballSabermetrics\obj\Debug\netcoreapp3.1\BaseballSabermetrics.genruntimeconfig.cache
+C:\Users\ctall\Code Projects\Visual Studio\F# Projects\Sabermetrics\BaseballSabermetrics\bin\Debug\netcoreapp3.1\FSharp.Data.dll
