@@ -1,5 +1,5 @@
 ﻿namespace Sabermetrics
-module Player =
+module BaseballTypes =
     type Player = {
         Name: string
         Page: string
@@ -27,7 +27,11 @@ module Player =
         SH: int
         SF: int
         IBB: int
-    } 
+    }
+    
+    type Positional =
+    | Hitter of Player
+    | Pitcher of Player
 
     let create name page = 
         {
@@ -59,37 +63,12 @@ module Player =
             IBB = 0
         }
     
-    // Functions for adding stats to a player
-
-    let addGames games player = {player with G = games}
-    let addPA pa player = {player with PA = pa}
-    let addAB ab player = {player with AB = ab}
-    let addRuns r player = {player with R = r}
-    let addHits h player = {player with H = h}
-    let add2B db player = {player with Doubles = db}
-    let add3B tp player = {player with Triples = tp}
-    let addHR hr player = {player with HR = hr}
-    let addRBI rbi player = {player with RBI = rbi}
-    let addSB sb player = {player with SB = sb}
-    let addCS cs player = {player with CS = cs}
-    let addBB bb player = {player with BB = bb}
-    let addSO so player = {player with SO = so}
-    let addBA ba player = {player with BA = ba}
-    let addOBP obp player = {player with OBP = obp}
-    let addSLG slg player = {player with SLG = slg}
-    let addOPS ops player = {player with OPS = ops}
-    let addOPSplus ops player = {player with OPSPlus = ops}
-    let addTB tb player = {player with TB = tb}
-    let addGDP gdp player = {player with GDP = gdp}
-    let addHBP hbp player = {player with HBP = hbp}
-    let addSH sh player = {player with SH = sh}
-    let addSF sf player = {player with SF = sf}
-    let addIBB ibb player = {player with IBB = ibb}
+    
 
 module BaseballDataCollector =
     open Sabermetrics.HtmlHandler
     open Sabermetrics.WebWorker
-    open Player
+    open BaseballTypes
     open FSharp.Data
 
     let parseHtml html =
@@ -98,9 +77,35 @@ module BaseballDataCollector =
         | None -> "No fun allowed"
 
     let createPlayer (node: HtmlNode) =
-        Player.create (HtmlNodeExtensions.InnerText node) (HtmlNodeExtensions.AttributeValue (node, "href"))
+        BaseballTypes.create (HtmlNodeExtensions.InnerText node) (HtmlNodeExtensions.AttributeValue (node, "href"))
 
     let updateStats (stats: string list) player =
+        // Functions for adding stats to a player
+        let addGames games player = {player with G = games}
+        let addPA pa player = {player with PA = pa}
+        let addAB ab player = {player with AB = ab}
+        let addRuns r player = {player with R = r}
+        let addHits h player = {player with H = h}
+        let add2B db player = {player with Doubles = db}
+        let add3B tp player = {player with Triples = tp}
+        let addHR hr player = {player with HR = hr}
+        let addRBI rbi player = {player with RBI = rbi}
+        let addSB sb player = {player with SB = sb}
+        let addCS cs player = {player with CS = cs}
+        let addBB bb player = {player with BB = bb}
+        let addSO so player = {player with SO = so}
+        let addBA ba player = {player with BA = ba}
+        let addOBP obp player = {player with OBP = obp}
+        let addSLG slg player = {player with SLG = slg}
+        let addOPS ops player = {player with OPS = ops}
+        let addOPSplus ops player = {player with OPSPlus = ops}
+        let addTB tb player = {player with TB = tb}
+        let addGDP gdp player = {player with GDP = gdp}
+        let addHBP hbp player = {player with HBP = hbp}
+        let addSH sh player = {player with SH = sh}
+        let addSF sf player = {player with SF = sf}
+        let addIBB ibb player = {player with IBB = ibb}
+
         player
         |> addGames (int stats.[0])
         |> addPA (int stats.[1])
