@@ -1,4 +1,16 @@
 ﻿namespace Sabermetrics
+module WebWorker =
+    open System
+    open System.Net
+    open System.Text.RegularExpressions
+    open System.IO
+    open FSharp.Data
+
+    type PlayerPage = PlayerPage of HtmlDocument
+    type LetterPage = {Html: HtmlDocument; Letter: char}
+    let getSite (url:string) =
+        HtmlDocument.Load(url)
+
 module HtmlHandler =
     open System.Text.RegularExpressions
     open FSharp.Data

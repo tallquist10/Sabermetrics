@@ -7,7 +7,6 @@
 
   <ItemGroup>
     <Compile Include="HtmlHandler.fs" />
-    <Compile Include="WebWorker.fs" />
     <Compile Include="BaseballDataCollector.fs" />
     <Compile Include="ExcelExport.fs" />
     <Compile Include="Program.fs" />
