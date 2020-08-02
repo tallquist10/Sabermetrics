@@ -9,13 +9,23 @@ module WebWorker =
     type PlayerPage = PlayerPage of HtmlDocument
     type LetterPage = {Html: HtmlDocument; Letter: char}
     let getSite (url:string) =
-        HtmlDocument.Load(url)
+        try
+            let doc = HtmlDocument.Load(url)
+            Result.Ok doc
+        with
+        | _ -> Result.Error (sprintf "Failed to retrieve web page for %s" url)
 
 module HtmlHandler =
     open System.Text.RegularExpressions
     open FSharp.Data
-    let getHtmlSections tag (doc:HtmlDocument) =
-        doc.CssSelect(tag)
+    let getHtmlSections tag (doc: Result<HtmlDocument, string>) =
+        match doc with
+        | Result.Ok d -> 
+            try
+                Result.Ok (d.CssSelect(tag))
+            with 
+            | _ -> Result.Error (sprintf "Could not retrieve sections based on selector '%s'" tag)
+        | Result.Error e -> Result.Error e
 
     let getHtmlSectionByID id doc =
         getHtmlSections (sprintf "#%s" id) doc
