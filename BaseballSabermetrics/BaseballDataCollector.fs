@@ -281,20 +281,25 @@ module BaseballDataCollector =
      
     let getPlayerPage player = 
        match player with
-       | Hitter h -> getSite (sprintf "https://www.baseball-reference.com/players%s" h.Page)
-       | Pitcher p -> getSite (sprintf "https://www.baseball-reference.com/players%s" p.Page)
+       | Result.Ok p ->
+        match p with
+           | Hitter h -> getSite (sprintf "https://www.baseball-reference.com/players%s" h.Page)
+           | Pitcher pitch -> getSite (sprintf "https://www.baseball-reference.com/players%s" pitch.Page)
+
+       | Result.Error e -> Result.Error e
 
     let createPlayer (node: HtmlNode) =
         let name = HtmlNodeExtensions.InnerText node
         let page = HtmlNodeExtensions.AttributeValue (node, "href")
-        let doc = getSite (sprintf "https://www.baseball-reference.com/players%s" page)
-        let stats = doc |> getHtmlSections "#pitching_standard tfoot tr:first-child td"
+        let doc = getSite (sprintf "https://www.baseball-reference.com%s" page)
+        let stats = doc |> getHtmlSections "#pitching_standard > tfoot > tr:nth-child(1) > td"
         match stats with
-        | Result.Ok x -> 
-            match x with
-            |_::_ -> Result.Ok (createPitcher name page)
-            | _ -> Result.Ok (createHitter name page)
-        | Result.Error e -> Result.Error e
+        | Result.Ok x -> Result.Ok (createPitcher name page)
+        | Result.Error e ->
+            let stats = doc |> getHtmlSections "#batting_standard\.2007 > td:nth-child(12)" 
+            match stats with
+            | Result.Ok _ -> Result.Ok (createHitter name page)
+            | Result.Error e -> Result.Error (sprintf "Could not create player %s" name)
     
     let updatePitcherStats player =
         player
@@ -302,11 +307,14 @@ module BaseballDataCollector =
     let gatherStats player =
         let doc = getPlayerPage player
         match player with
-        | Hitter p -> doc |> getHtmlSections "#pitching_standard tfoot tr:first-child td"
-        | Pitcher p -> doc |> getHtmlSections "#batting_standard tfoot tr:first-child td"
+        | Result.Ok p ->
+            match p with
+            | Hitter p -> doc |> getHtmlSections "#pitching_standard tfoot tr:first-child td"
+            | Pitcher p -> doc |> getHtmlSections "#batting_standard tfoot tr:first-child td"
+        | Result.Error e -> Result.Error e
 
     let getStats player =
-        let updateStats (stats: list<Stat<string>>) player =
+        let updateStats player (stats: Stat<string> list)  =
             match player with
             | Result.Ok p ->
                 match p with
@@ -317,12 +325,15 @@ module BaseballDataCollector =
 
         let stats = 
             let stats = gatherStats player
-            stats
-            |> List.map (fun html -> HtmlNodeExtensions.InnerText html)
-            |> List.map (fun s -> Stat s)
-        let update = updateStats stats player
-            
-        update
+            match stats with 
+            | Result.Ok statHtmls -> 
+                statHtmls 
+                |> List.map (fun html -> HtmlNodeExtensions.InnerText html)
+                |> List.map (fun s -> Stat s)
+                |> updateStats player
+            | Result.Error e -> Result.Error e
+
+        stats
 
     let getOkResults results: Result<'a, 'b> list =
         results
@@ -331,7 +342,9 @@ module BaseballDataCollector =
     let getPlayersForLetterPage letter =
         try
             let players = getSite (sprintf "https://baseball-reference.com/players/%c/" letter)
-            Result.Ok {Html = players; Letter = letter}
+            match players with
+            | Result.Ok html -> Result.Ok {Html = html; Letter = letter}
+            | Result.Error _ -> Result.Error (sprintf "Could not load the webpage for players whose last names start with '%c'" (Char.ToUpper letter))
         with
         | ex -> Result.Error (sprintf "Could not load the webpage for players whose last names start with '%c'" (Char.ToUpper letter))
             
@@ -339,8 +352,8 @@ module BaseballDataCollector =
         match letterPage with
         | Result.Ok playersPage ->
             try
-                let playerList = playersPage.Html |> getHtmlSections "#div_players_ p a"
-                Result.Ok playerList
+                let playerList = playersPage.Html |> Result.Ok |> getHtmlSections "#div_players_ p a"
+                playerList
             with
             | ex -> Result.Error (sprintf "Failed to extract list of players for letter '%c'" (Char.ToUpper playersPage.Letter))
         | Result.Error msg -> Result.Error msg
@@ -366,8 +379,9 @@ module BaseballDataCollector =
         match players with 
         | Result.Ok pages -> 
             pages
-            |> List.map createPlayer
-            |> List.map getStats
+            |> List.toArray
+            |> Array.Parallel.map createPlayer
+            |> Array.map getStats
             |> Result.Ok
 
         | Result.Error e -> Result.Error "Could not retrieve stats for all players"
