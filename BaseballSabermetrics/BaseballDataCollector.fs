@@ -245,7 +245,7 @@ module BaseballDataCollector =
     open System
         
 
-    let updateHitterStats (stats: Stat<string> list) player =
+    let updateStats HitterStats (stats: Stat<string> list) player =
         // Functions for adding stats to a player
         match player with
         | Hitter _ -> 
@@ -300,9 +300,6 @@ module BaseballDataCollector =
             match stats with
             | Result.Ok _ -> Result.Ok (createHitter name page)
             | Result.Error e -> Result.Error (sprintf "Could not create player %s" name)
-    
-    let updatePitcherStats player =
-        player
 
     let gatherStats player =
         let doc = getPlayerPage player
@@ -318,8 +315,8 @@ module BaseballDataCollector =
             match player with
             | Result.Ok p ->
                 match p with
-                | Hitter _ -> Result.Ok (updateHitterStats stats p)
-                | Pitcher _ -> Result.Ok (updatePitcherStats p)
+                | Hitter _ -> Result.Ok (updateStats p stats)
+                | Pitcher _ -> Result.Ok (updateStats p [])
 
             | Result.Error e -> Result.Error e
 
@@ -335,9 +332,9 @@ module BaseballDataCollector =
 
         stats
 
-    let getOkResults results: Result<'a, 'b> list =
+    let getOkResults results: Result<'a, 'b> [] =
         results
-        |> List.filter (fun res -> match res with | Result.Error _ -> false | Result.Ok _ -> true)
+        |> Array.filter (fun res -> match res with | Result.Error _ -> false | Result.Ok _ -> true)
         
     let getPlayersForLetterPage letter =
         try
@@ -364,11 +361,11 @@ module BaseballDataCollector =
         try
             let l = 
                 letters
-                |> List.map getPlayersForLetterPage
-                |> List.map getPlayersForLetter
+                |> Array.Parallel.map getPlayersForLetterPage
+                |> Array.Parallel.map getPlayersForLetter
                 |> getOkResults
-                |> List.map (fun res -> match res with | Result.Ok v -> v | Result.Error e -> [])
-                |> List.collect id
+                |> Array.map (fun res -> match res with | Result.Ok v -> v |> List.toArray | Result.Error e -> [||])
+                |> Array.collect id
             
             Result.Ok l
 
@@ -379,9 +376,8 @@ module BaseballDataCollector =
         match players with 
         | Result.Ok pages -> 
             pages
-            |> List.toArray
             |> Array.Parallel.map createPlayer
-            |> Array.map getStats
+            |> Array.Parallel.map getStats
             |> Result.Ok
 
         | Result.Error e -> Result.Error "Could not retrieve stats for all players"
