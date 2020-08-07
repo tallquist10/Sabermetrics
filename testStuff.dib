@@ -1,0 +1,19 @@
+#!fsharp
+
+#r @"C:\Users\ctall\Code Projects\Visual Studio\F# Projects\Sabermetrics\BaseballSabermetrics\bin\Debug\netcoreapp3.1\BaseballSabermetrics.dll"
+
+#!fsharp
+
+#r @"C:\Users\ctall\Code Projects\Visual Studio\F# Projects\Sabermetrics\BaseballSabermetrics\bin\Debug\netcoreapp3.1\FSharp.Data.dll"
+
+#!fsharp
+
+open Sabermetrics
+open Sabermetrics.BaseballDataCollector
+open Sabermetrics.HtmlHandler
+open Sabermetrics.WebWorker
+open FSharp.Data
+
+#!fsharp
+
+getSite "https://www.baseball-reference.com/"

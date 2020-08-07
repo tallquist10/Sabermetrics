@@ -15,6 +15,10 @@ module Stats =
             if str.Length = 0 then Stat 0.0 else
                 s |> string |> float |> Stat
 
+    let ExtractValue stat =
+        match stat with
+        | Stat s -> s
+
     type Hitter = {
         Name: string
         Page: string
@@ -346,10 +350,6 @@ module BaseballDataCollector =
                 let convertedStats = careerNumbers |> List.map (fun s -> Stat s)
                 convertedStats |> updateStats player
             | Result.Error e -> Result.Error e
-        
-        match playerWithStats with
-        | Result.Ok player -> printfn "Stats have been updated for %s" (match player with | Hitter h -> h.Name | Pitcher p -> p.Name)
-        | Result.Error _ -> ()
         playerWithStats
 
     let getOkResults results: Result<'a, 'b> [] =
@@ -381,10 +381,10 @@ module BaseballDataCollector =
         try
             let l = 
                 letters
-                |> Array.map getPlayersForLetterPage
-                |> Array.map getPlayersForLetter
+                |> Array.Parallel.map getPlayersForLetterPage
+                |> Array.Parallel.map getPlayersForLetter
                 |> getOkResults
-                |> Array.map (fun res -> match res with | Result.Ok v -> v |> List.toArray | Result.Error e -> [||])
+                |> Array.Parallel.map (fun res -> match res with | Result.Ok v -> v |> List.toArray | Result.Error e -> [||])
                 |> Array.collect id
             
             Result.Ok l
@@ -396,8 +396,8 @@ module BaseballDataCollector =
         match players with 
         | Result.Ok pages -> 
             pages
-            |> Array.map (createPlayer >> getStats)
-            |> Array.map (fun p -> Result.bind (isHitter) p)
-            |> Result.Ok
+            |> Array.Parallel.map (createPlayer >> getStats)
+            |> Array.Parallel.map (fun p -> Result.bind (isHitter) p)
+            |> getOkResults
 
-        | Result.Error e -> Result.Error "Could not retrieve stats for all players"
+        | Result.Error e -> [| Result.Error "Could not retrieve stats for all players" |]

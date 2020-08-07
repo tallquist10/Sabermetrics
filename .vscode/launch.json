@@ -1,0 +1,17 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "coreclr",
+            "name": "Launch Baseball Metrics",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/BaseballSabermetrics",
+            "program": "${workspaceFolder}/BaseballSabermetrics/bin/Debug/netcoreapp3.1/BaseballSabermetrics.dll",
+            "enableStepFiltering": false,
+            "requireExactSource": false
+        }
+    ]
+}
