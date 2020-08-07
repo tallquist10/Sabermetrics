@@ -2,8 +2,18 @@
 module Stats =
     type Stat<'a> = Stat of 'a    
     
-    let ToInt stat = match stat with | Stat s -> s |> string |> int |> Stat
-    let ToFloat stat = match stat with | Stat s -> s |> string |> float |> Stat
+    let ToInt stat = 
+        match stat with 
+        | Stat s -> 
+            let str = s |> string
+            if str.Length = 0 then Stat 0 else
+                s |> string |> int |> Stat
+    let ToFloat stat = 
+        match stat with 
+        | Stat s -> 
+            let str = s |> string
+            if str.Length = 0 then Stat 0.0 else
+                s |> string |> float |> Stat
 
     type Hitter = {
         Name: string
@@ -245,7 +255,7 @@ module BaseballDataCollector =
     open System
         
 
-    let updateStats HitterStats (stats: Stat<string> list) player =
+    let updateStats (stats: Stat<string> list) player =
         // Functions for adding stats to a player
         match player with
         | Hitter _ -> 
@@ -283,8 +293,8 @@ module BaseballDataCollector =
        match player with
        | Result.Ok p ->
         match p with
-           | Hitter h -> getSite (sprintf "https://www.baseball-reference.com/players%s" h.Page)
-           | Pitcher pitch -> getSite (sprintf "https://www.baseball-reference.com/players%s" pitch.Page)
+           | Hitter h -> getSite (sprintf "https://www.baseball-reference.com%s" h.Page)
+           | Pitcher pitch -> getSite (sprintf "https://www.baseball-reference.com%s" pitch.Page)
 
        | Result.Error e -> Result.Error e
 
@@ -292,22 +302,27 @@ module BaseballDataCollector =
         let name = HtmlNodeExtensions.InnerText node
         let page = HtmlNodeExtensions.AttributeValue (node, "href")
         let doc = getSite (sprintf "https://www.baseball-reference.com%s" page)
-        let stats = doc |> getHtmlSections "#pitching_standard > tfoot > tr:nth-child(1) > td"
+        let stats = doc |> getHtmlSections "#pitching_standard"
         match stats with
         | Result.Ok x -> Result.Ok (createPitcher name page)
         | Result.Error e ->
-            let stats = doc |> getHtmlSections "#batting_standard\.2007 > td:nth-child(12)" 
+            let stats = doc |> getHtmlSections "#batting_standard" 
             match stats with
             | Result.Ok _ -> Result.Ok (createHitter name page)
             | Result.Error e -> Result.Error (sprintf "Could not create player %s" name)
+
+    let isHitter player =
+        match player with
+        | Hitter h -> Result.Ok h
+        | Pitcher _ -> Result.Error "Pitcher"
 
     let gatherStats player =
         let doc = getPlayerPage player
         match player with
         | Result.Ok p ->
             match p with
-            | Hitter p -> doc |> getHtmlSections "#pitching_standard tfoot tr:first-child td"
-            | Pitcher p -> doc |> getHtmlSections "#batting_standard tfoot tr:first-child td"
+            | Hitter p -> doc |> getHtmlSections "#batting_standard tfoot tr"
+            | Pitcher p -> doc |> getHtmlSections "#pitching_standard tfoot tr"
         | Result.Error e -> Result.Error e
 
     let getStats player =
@@ -315,22 +330,27 @@ module BaseballDataCollector =
             match player with
             | Result.Ok p ->
                 match p with
-                | Hitter _ -> Result.Ok (updateStats p stats)
-                | Pitcher _ -> Result.Ok (updateStats p [])
+                | Hitter _ -> Result.Ok (updateStats stats p)
+                | Pitcher _ -> Result.Ok (updateStats [] p)
 
             | Result.Error e -> Result.Error e
 
-        let stats = 
-            let stats = gatherStats player
-            match stats with 
+        let playerWithStats = 
+            let statResult = gatherStats player
+            match statResult with 
             | Result.Ok statHtmls -> 
-                statHtmls 
-                |> List.map (fun html -> HtmlNodeExtensions.InnerText html)
-                |> List.map (fun s -> Stat s)
-                |> updateStats player
+                let careerRow = statHtmls |> List.head
+                let careerStats = careerRow |> (fun n -> CssSelectorExtensions.CssSelect (n,"td"))
+                let careerNumbers = careerStats |> List.map (fun html -> 
+                    HtmlNodeExtensions.InnerText html)
+                let convertedStats = careerNumbers |> List.map (fun s -> Stat s)
+                convertedStats |> updateStats player
             | Result.Error e -> Result.Error e
-
-        stats
+        
+        match playerWithStats with
+        | Result.Ok player -> printfn "Stats have been updated for %s" (match player with | Hitter h -> h.Name | Pitcher p -> p.Name)
+        | Result.Error _ -> ()
+        playerWithStats
 
     let getOkResults results: Result<'a, 'b> [] =
         results
@@ -361,8 +381,8 @@ module BaseballDataCollector =
         try
             let l = 
                 letters
-                |> Array.Parallel.map getPlayersForLetterPage
-                |> Array.Parallel.map getPlayersForLetter
+                |> Array.map getPlayersForLetterPage
+                |> Array.map getPlayersForLetter
                 |> getOkResults
                 |> Array.map (fun res -> match res with | Result.Ok v -> v |> List.toArray | Result.Error e -> [||])
                 |> Array.collect id
@@ -376,8 +396,8 @@ module BaseballDataCollector =
         match players with 
         | Result.Ok pages -> 
             pages
-            |> Array.Parallel.map createPlayer
-            |> Array.Parallel.map getStats
+            |> Array.map (createPlayer >> getStats)
+            |> Array.map (fun p -> Result.bind (isHitter) p)
             |> Result.Ok
 
         | Result.Error e -> Result.Error "Could not retrieve stats for all players"

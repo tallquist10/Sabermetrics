@@ -22,7 +22,10 @@ module HtmlHandler =
         match doc with
         | Result.Ok d -> 
             try
-                Result.Ok (CssSelectorExtensions.CssSelect (d,tag))
+                let sections = CssSelectorExtensions.CssSelect (d,tag)
+                match sections with
+                |_::_ -> Result.Ok sections
+                | [] -> Result.Error (sprintf "Could not find any sections for the selector '%s'" tag)
             with 
             | _ -> Result.Error (sprintf "Could not retrieve sections based on selector '%s'" tag)
         | Result.Error e -> Result.Error e
