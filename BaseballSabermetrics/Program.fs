@@ -17,5 +17,5 @@ let getStatsForSabermetrics (players:Result<Hitter,string> []) =
        | _ -> () 
 [<EntryPoint>]
 let main argv =
-    getStatsForSabermetrics (getStatsForPlayers (getAllPlayers [|'a'..'b'|]))
+    getStatsForSabermetrics (getStatsForPlayers (getAllPlayers [|'a'..'z'|]))
     0 // return an integer exit code

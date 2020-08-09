@@ -56,11 +56,19 @@ module ExcelExport =
         |> writeToCell row 23 (player.SH |> ExtractValue)
         |> writeToCell row 24 (player.SF |> ExtractValue)
         |> writeToCell row 25 (player.IBB |> ExtractValue)
+
+    let addHeaderRows (sheet: OfficeOpenXml.ExcelWorksheet) =
+        let headers = [|"Name"; "G"; "BA"; "H"; "2B"; "3B"; "HR"; "RBI"; "R"; "SB"; "CS"; "BB"; "SO"; "PA"; "AB"; "OBP"; "SLG"; "OPS"; "OPS+"; "TB"; "GDP"; "HBP"; "SH"; "SF"; "IBB"|]
+        let mutable statSheet = sheet
+        for i in 0..headers.Length-1 do
+            statSheet <- writeToCell 1 (i+1) headers.[i] statSheet
+        
+        statSheet
          
     let insertPlayersToCells (players: Hitter []) =
         let excel = createExcel (Directory.GetDirectoryRoot(Directory.GetCurrentDirectory()) + "sabermetrics/baseball/stats.xlsx")
-        let mutable statSheet = getWorksheet excel
-        for i in 1..players.Length do
+        let mutable statSheet = getWorksheet excel |> addHeaderRows
+        for i in 0..players.Length-1 do
             statSheet <- addStatsToSheet statSheet (i+2) players.[i] 
             excel.Save()
         
