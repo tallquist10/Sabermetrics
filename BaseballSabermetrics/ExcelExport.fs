@@ -71,6 +71,6 @@ module ExcelExport =
         for i in 0..players.Length-1 do
             statSheet <- addStatsToSheet statSheet (i+2) players.[i] 
             excel.Save()
-        
+        printfn "Stat sheet created at %s" (Directory.GetDirectoryRoot(Directory.GetCurrentDirectory()) + "sabermetrics/baseball/stats.xlsx")
         
 
