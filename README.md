@@ -6,4 +6,7 @@ The solution is here! This program allows you to get stats for every hitter in b
 
 ## Installation
 
-To install the program, simply download the [msi](https://github.com/tallquist10/Sabermetrics/releases/download/1.0.1/BaseballSabermetrics.msi) to install the files and run the stat retrieval program.
+To install the program, simply click the appropriate download to install the files and run the stat retrieval program.
+
+* Windows - click [here](https://github.com/tallquist10/Sabermetrics/releases/download/1.0.1/BaseballSabermetrics.msi)
+* MacOS, Linux, ChromeOS, etc. - click [here](https://github.com/tallquist10/Sabermetrics/releases/download/1.0.1/BaseballSabermetrics.zip)
