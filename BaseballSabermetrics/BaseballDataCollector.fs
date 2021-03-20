@@ -1,120 +1,44 @@
 ﻿namespace Sabermetrics
 module Stats =
-    type Stat<'a> = Stat of 'a    
+    open Domain  
     
-    let ToInt stat = 
-        match stat with 
-        | Stat s -> 
-            let str = s |> string
-            if str.Length = 0 then Stat 0 else
-                s |> string |> int |> Stat
+    let ToInt stat =
+        let str = stat |> string
+        if str.Length = 0 then Stat 0 else
+            stat |> string |> int |> Stat
     let ToFloat stat = 
-        match stat with 
-        | Stat s -> 
-            let str = s |> string
-            if str.Length = 0 then Stat 0.0 else
-                s |> string |> float |> Stat
-
-    let ExtractValue stat =
-        match stat with
-        | Stat s -> s
-
-    type Hitter = {
-        Name: string
-        Page: string
-        G: Stat<int>
-        PA: Stat<int>
-        AB: Stat<int>
-        R: Stat<int>
-        H: Stat<int>
-        Doubles: Stat<int>
-        Triples: Stat<int>
-        HR: Stat<int>
-        RBI: Stat<int>
-        SB: Stat<int>
-        CS: Stat<int>
-        BB: Stat<int>
-        SO: Stat<int>
-        BA: Stat<float>
-        OBP: Stat<float>
-        SLG: Stat<float>
-        OPS: Stat<float>
-        OPSPlus: Stat<float>
-        TB: Stat<int>
-        GDP: Stat<int>
-        HBP: Stat<int>
-        SH: Stat<int>
-        SF: Stat<int>
-        IBB: Stat<int>
-    }
-
-    type Pitcher = {
-        Name: string
-        Page: string
-        Wins: Stat<int>
-        Losses: Stat<int>
-        WinPercent: Stat<float>
-        ERA: Stat<float>
-        G: Stat<int>
-        GS: Stat<int>
-        GF: Stat<int>
-        CG: Stat<int>
-        SHO: Stat<int>
-        SV: Stat<int>
-        IP: Stat<int>
-        H: Stat<int>
-        R: Stat<int>
-        ER: Stat<int>
-        HR: Stat<int>
-        BB: Stat<int>
-        IBB: Stat<int>
-        SO: Stat<int>
-        HBP: Stat<int>
-        BK: Stat<int>
-        WP: Stat<int>
-        BF: Stat<int>
-        ERAplus: Stat<int>
-        FIP: Stat<float>
-        WHIP: Stat<float>
-        H9: Stat<float>
-        HR9: Stat<float>
-        BB9: Stat<float>
-        SO9: Stat<float>
-        SOperW: Stat<float>
-    }
-
-    type Player = 
-    | Hitter of Hitter
-    | Pitcher of Pitcher
+        let str = stat |> string
+        if str.Length = 0 then Stat 0.0 else
+            stat |> string |> float |> Stat
  
     let createHitter name page = 
         Hitter {
             Name = name
             Page = page
-            G = Stat 0
-            PA = Stat 0
-            AB = Stat 0
-            R = Stat 0
-            H = Stat 0
-            Doubles = Stat 0
-            Triples = Stat 0
-            HR = Stat 0
-            RBI = Stat 0
-            SB = Stat 0
-            CS = Stat 0
-            BB = Stat 0
-            SO = Stat 0
-            BA = Stat 0.0 
-            OBP = Stat 0.0 
-            SLG = Stat 0.0 
-            OPS = Stat 0.0
-            OPSPlus = Stat 0.0
-            TB = Stat 0
-            GDP = Stat 0
-            HBP = Stat 0
-            SH = Stat 0
-            SF = Stat 0
-            IBB = Stat 0
+            G = 0<G>
+            PA = 0<PA>
+            AB = 0<AB>
+            R = 0<R>
+            H = 0<H>
+            Doubles = 0<Double>
+            Triples = 0<Triple>
+            HR = 0<HR>
+            RBI = 0<RBI>
+            SB = 0<SB>
+            CS = 0<CS>
+            BB = 0<BB>
+            SO = 0<SO>
+            BA = 0.0<BA>
+            OBP = 0.0<OBP>
+            SLG = 0.0<SLG>
+            OPS = 0.0<OPS>
+            OPSPlus = 0.0<OPSPlus>
+            TB = 0<TB>
+            GDP = 0<GDP>
+            HBP = 0<HBP>
+            SH = 0<SH>
+            SF = 0<SF>
+            IBB = 0<IBB>
         }
 
     let createPitcher name page = //TODO: Change pitching stats
@@ -153,101 +77,101 @@ module Stats =
             SOperW = Stat 0.0
         }
     
-    let addGames (games: Stat<string>) player = 
+    let addGames (games: string) player = 
         match player with
-        | Hitter h -> Hitter {h with G = games |> ToInt}
+        | Hitter h -> Hitter {h with G = games |> int |> (*) 1<G>}
         | Pitcher p -> Pitcher {p with G = games |> ToInt}
-    let addPA (pa: Stat<string>) player =
+    let addPA (pa: string) player =
         match player with
-        | Hitter h -> Hitter {h with PA = pa |> ToInt}
+        | Hitter h -> Hitter {h with PA = pa |> int |> (*) 1<PA>}
         | _ -> player
-    let addAB (ab: Stat<string>) player = 
+    let addAB (ab: string) player = 
         match player with
-        | Hitter h -> Hitter {h with AB = ab |> ToInt}
+        | Hitter h -> Hitter {h with AB = ab |> int |> (*) 1<AB>}
         | _ -> player
-    let addRuns (r: Stat<string>) player = 
+    let addRuns (r: string) player = 
         match player with
-        | Hitter h -> Hitter {h with R = r |> ToInt}
+        | Hitter h -> Hitter {h with R = r |> int |> (*) 1<R>}
         | _ -> player
-    let addHits (h: Stat<string>) player = 
+    let addHits (h: string) player = 
         match player with
-        | Hitter hitter -> Hitter {hitter with H = h |> ToInt}
+        | Hitter hitter -> Hitter {hitter with H = h |> int |> (*) 1<H>}
         | _ -> player
-    let add2B (db: Stat<string>) player = 
+    let add2B (db: string) player = 
         match player with
-        | Hitter h -> Hitter {h with Doubles = db |> ToInt}
+        | Hitter h -> Hitter {h with Doubles = db |> int |> (*) 1<Double>}
         | _ -> player
-    let add3B (tp: Stat<string>) player = 
+    let add3B (tp: string) player = 
         match player with
-        | Hitter h -> Hitter {h with Triples = tp |> ToInt}
+        | Hitter h -> Hitter {h with Triples = tp |> int |> (*) 1<Triple>}
         | _ -> player
-    let addHR (hr: Stat<string>) player = 
+    let addHR (hr: string) player = 
         match player with
-        | Hitter h -> Hitter {h with HR = hr |> ToInt}
+        | Hitter h -> Hitter {h with HR = hr |> int |> (*) 1<HR>}
         | _ -> player
-    let addRBI (rbi: Stat<string>) player = 
+    let addRBI (rbi: string) player = 
         match player with
-        | Hitter h -> Hitter {h with RBI = rbi |> ToInt}
+        | Hitter h -> Hitter {h with RBI = rbi |> int |> (*) 1<RBI>}
         | _ -> player
-    let addSB (sb: Stat<string>) player = 
+    let addSB (sb: string) player = 
         match player with
-        | Hitter h -> Hitter {h with SB = sb |> ToInt}
+        | Hitter h -> Hitter {h with SB = sb |> int |> (*) 1<SB>}
         | _ -> player
-    let addCS (cs: Stat<string>) player = 
+    let addCS (cs: string) player = 
         match player with
-        | Hitter h -> Hitter {h with CS = cs |> ToInt}
+        | Hitter h -> Hitter {h with CS = cs |> int |> (*) 1<CS>}
         | _ -> player
-    let addBB (bb: Stat<string>) player = 
+    let addBB (bb: string) player = 
         match player with
-        | Hitter h -> Hitter {h with BB = bb |> ToInt}
+        | Hitter h -> Hitter {h with BB = bb |> int |> (*) 1<BB>}
         | _ -> player
-    let addSO (so: Stat<string>) player = 
+    let addSO (so: string) player = 
         match player with
-        | Hitter h -> Hitter {h with SO = so |> ToInt}
+        | Hitter h -> Hitter {h with SO = so |> int |> (*) 1<SO>}
         | _ -> player
-    let addBA (ba: Stat<string>) player = 
+    let addBA (ba: string) player = 
         match player with
-        | Hitter h -> Hitter {h with BA = ba |> ToFloat}
+        | Hitter h -> Hitter {h with BA = ba |> float |> (*) 1.0<BA>}
         | _ -> player
-    let addOBP (obp: Stat<string>) player = 
+    let addOBP (obp: string) player = 
         match player with
-        | Hitter h -> Hitter {h with OBP = obp |> ToFloat}
+        | Hitter h -> Hitter {h with OBP = obp |> float |> (*) 1.0<OBP>}
         | _ -> player
-    let addSLG (slg: Stat<string>) player = 
+    let addSLG (slg: string) player = 
         match player with
-        | Hitter h -> Hitter {h with SLG = slg |> ToFloat}
+        | Hitter h -> Hitter {h with SLG = slg |> float |> (*) 1.0<SLG>}
         | _ -> player
-    let addOPS (ops: Stat<string>) player = 
+    let addOPS (ops: string) player = 
         match player with
-        | Hitter h -> Hitter {h with OPS = ops |> ToFloat}
+        | Hitter h -> Hitter {h with OPS = ops |> float |> (*) 1.0<OPS>}
         | _ -> player
-    let addOPSplus (ops: Stat<string>) player = 
+    let addOPSplus (ops: string) player = 
         match player with
-        | Hitter h -> Hitter {h with OPSPlus = ops |> ToFloat}
+        | Hitter h -> Hitter {h with OPSPlus = ops |> float |> (*) 1.0<OPSPlus>}
         | _ -> player
-    let addTB (tb: Stat<string>) player = 
+    let addTB (tb: string) player = 
         match player with
-        | Hitter h -> Hitter {h with TB = tb |> ToInt}
+        | Hitter h -> Hitter {h with TB = tb |> int |> (*) 1<TB>}
         | _ -> player
-    let addGDP (gdp: Stat<string>) player = 
+    let addGDP (gdp: string) player = 
         match player with
-        | Hitter h -> Hitter {h with GDP = gdp |> ToInt}
+        | Hitter h -> Hitter {h with GDP = gdp |> int |> (*) 1<GDP>}
         | _ -> player
-    let addHBP (hbp: Stat<string>) player = 
+    let addHBP (hbp: string) player = 
         match player with
-        | Hitter h -> Hitter {h with HBP = hbp |> ToInt}
+        | Hitter h -> Hitter {h with HBP = hbp |> int |> (*) 1<HBP>}
         | _ -> player
-    let addSH (sh: Stat<string>) player = 
+    let addSH (sh: string) player = 
         match player with
-        | Hitter h -> Hitter {h with SH = sh |> ToInt}
+        | Hitter h -> Hitter {h with SH = sh |> int |> (*) 1<SH>}
         | _ -> player
-    let addSF (sf: Stat<string>) player = 
+    let addSF (sf: string) player = 
         match player with
-        | Hitter h -> Hitter {h with SF = sf |> ToInt}
+        | Hitter h -> Hitter {h with SF = sf |> int |> (*) 1<SF>}
         | _ -> player
-    let addIBB (ibb: Stat<string>) player = 
+    let addIBB (ibb: string) player = 
         match player with
-        | Hitter h -> Hitter {h with IBB = ibb |> ToInt}
+        | Hitter h -> Hitter {h with IBB = ibb |> int |> (*) 1<IBB>}
         | _ -> player
     
 
@@ -257,9 +181,9 @@ module BaseballDataCollector =
     open Stats
     open FSharp.Data
     open System
-        
+    open Domain
 
-    let updateStats (stats: Stat<string> list) player =
+    let updateStats (stats: string list) player =
         // Functions for adding stats to a player
         match player with
         | Hitter _ -> 
@@ -291,8 +215,6 @@ module BaseballDataCollector =
 
         | Pitcher _ -> player
 
-   
-     
     let getPlayerPage player = 
        match player with
        | Result.Ok p ->
@@ -329,8 +251,20 @@ module BaseballDataCollector =
             | Pitcher p -> doc |> getHtmlSections "#pitching_standard tfoot tr"
         | Result.Error e -> Result.Error e
 
+    let playerExistsinDatabase (da:PlayerDataAccess.IPlayerDataAccess) player =
+        match player with
+        | Result.Ok p ->
+            match p with
+            | Hitter hitter -> 
+                match da.PlayerExists (PlayerID hitter.Page) with
+                | Result.Ok res -> res |> Option.ofObj |> Option.isSome
+                | Result.Error _ -> false
+            | Pitcher _ -> false 
+        | Result.Error _ -> false
+        
+
     let getStats player =
-        let updateStats player (stats: Stat<string> list)  =
+        let updateStats player (stats: string list)  =
             match player with
             | Result.Ok p ->
                 match p with
@@ -347,7 +281,7 @@ module BaseballDataCollector =
                 let careerStats = careerRow |> (fun n -> CssSelectorExtensions.CssSelect (n,"td"))
                 let careerNumbers = careerStats |> List.map (fun html -> 
                     HtmlNodeExtensions.InnerText html)
-                let convertedStats = careerNumbers |> List.map (fun s -> Stat s)
+                let convertedStats = careerNumbers
                 convertedStats |> updateStats player
             | Result.Error e -> Result.Error e
         playerWithStats
@@ -375,8 +309,6 @@ module BaseballDataCollector =
             | ex -> Result.Error (sprintf "Failed to extract list of players for letter '%c'" (Char.ToUpper playersPage.Letter))
         | Result.Error msg -> Result.Error msg
 
-   
-
     let getAllPlayers letters =
         try
             let l = 
@@ -393,10 +325,13 @@ module BaseballDataCollector =
         | _ -> Result.Error "Failed to combine results from all letters"
 
     let getStatsForPlayers players =
+        let dataAccess = PlayerDataAccess.GetInstance "players.db"
         match players with 
         | Result.Ok pages -> 
             pages
-            |> Array.Parallel.map (createPlayer >> getStats)
+            |> Array.Parallel.map createPlayer
+            |> Array.filter (playerExistsinDatabase dataAccess)
+            |> Array.Parallel.map getStats
             |> Array.Parallel.map (fun p -> Result.bind (isHitter) p)
             |> getOkResults
 
