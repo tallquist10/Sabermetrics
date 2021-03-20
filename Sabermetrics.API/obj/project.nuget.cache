@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "vMXmWwVtQ6w4T86n5CCtEuq5I8Jf0hoTfH2aZBH8NNTFrrwrq83OP9w3rnbj67bnlauz9+wjrGIdbPemtCOLmA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\ctall\\Code Projects\\DotNet\\sabermetrics\\Sabermetrics\\Sabermetrics.API\\Sabermetrics.API.fsproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\ctall\\.nuget\\packages\\fsharp.core\\5.0.0\\fsharp.core.5.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
