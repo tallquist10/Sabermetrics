@@ -37,30 +37,30 @@ module Domain =
     type Hitter = {
         Name: string
         Page: string
-        G: Stat<int>
-        PA: Stat<int>
-        AB: Stat<int>
-        R: Stat<int>
-        H: Stat<int>
-        Doubles: Stat<int>
-        Triples: Stat<int>
-        HR: Stat<int>
-        RBI: Stat<int>
-        SB: Stat<int>
-        CS: Stat<int>
-        BB: Stat<int>
-        SO: Stat<int>
-        BA: Stat<float>
-        OBP: Stat<float>
-        SLG: Stat<float>
-        OPS: Stat<float>
-        OPSPlus: Stat<float>
-        TB: Stat<int>
-        GDP: Stat<int>
-        HBP: Stat<int>
-        SH: Stat<int>
-        SF: Stat<int>
-        IBB: Stat<int>
+        G: int<G>
+        PA: int<PA>
+        AB: int<AB>
+        R: int<R>
+        H: int<H>
+        Doubles: int<Double>
+        Triples: int<Triple>
+        HR: int<HR>
+        RBI: int<RBI>
+        SB: int<SB>
+        CS: int<CS>
+        BB: int<BB>
+        SO: int<SO>
+        BA: float<BA>
+        OBP: float<OBP>
+        SLG: float<SLG>
+        OPS: float<OPS>
+        OPSPlus: float<OPSPlus>
+        TB: int<TB>
+        GDP: int<GDP>
+        HBP: int<HBP>
+        SH: int<SH>
+        SF: int<SF>
+        IBB: int<IBB>
     }
 
     type Pitcher = {
