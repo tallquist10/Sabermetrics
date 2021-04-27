@@ -21,9 +21,17 @@ type Startup private () =
     member this.ConfigureServices(services: IServiceCollection) =
         // Add framework services.
         services.AddControllers() |> ignore
+        // Register the Swagger generator, defining 1 or more Swagger documents
+        services.AddSwaggerGen() |> ignore
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     member this.Configure(app: IApplicationBuilder, env: IWebHostEnvironment) =
+        app.UseSwagger() |> ignore
+        app.UseSwaggerUI(
+            fun c -> 
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1")
+                c.RoutePrefix <- "api"
+        ) |> ignore
         if (env.IsDevelopment()) then
             app.UseDeveloperExceptionPage() |> ignore
 
