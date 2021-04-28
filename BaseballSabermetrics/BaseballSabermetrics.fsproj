@@ -6,15 +6,23 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="HtmlHandler.fs" />
-    <Compile Include="BaseballDataCollector.fs" />
-    <Compile Include="ExcelExport.fs" />
+    <Content Include="baseball.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Compile Include="Domain.fs" />
+    <Compile Include="BaseballDataAccess.fs" />
+    <Compile Include="BaseballDataCollector.fs" />    
     <Compile Include="Program.fs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="EPPlus" Version="4.5.3.3" />
     <PackageReference Include="FSharp.Data" Version="3.3.3" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="5.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DependencyHelpers\DependencyHelpers.fsproj" />
   </ItemGroup>
 
 </Project>

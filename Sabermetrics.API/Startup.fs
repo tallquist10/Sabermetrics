@@ -11,18 +11,19 @@ open Microsoft.AspNetCore.Mvc
 open Microsoft.Extensions.Configuration
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Hosting
+open Sabermetrics.Baseball.PlayerDataAccess
 
 type Startup private () =
     new (configuration: IConfiguration) as this =
         Startup() then
-        this.Configuration <- configuration
+        this.Configuration <- configuration 
 
-    // This method gets called by the runtime. Use this method to add services to the container.
-    member this.ConfigureServices(services: IServiceCollection) =
+    member this.ConfigureServices(services: IServiceCollection) = // This method gets called by the runtime. Use this method to add services to the container.
         // Add framework services.
         services.AddControllers() |> ignore
         // Register the Swagger generator, defining 1 or more Swagger documents
         services.AddSwaggerGen() |> ignore
+        services.AddSingleton<IPlayerDataAccess>(GetInstance "baseball.db") |> ignore
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     member this.Configure(app: IApplicationBuilder, env: IWebHostEnvironment) =
