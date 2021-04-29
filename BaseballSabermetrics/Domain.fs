@@ -284,33 +284,36 @@ module Stats =
         | _ -> stat
 
     let updateStats (stats: string list) player =
+        match stats with
+        | [] -> player
+        | _ ->
         // Functions for adding stats to a player
-        match player with
-        | Hitter _ -> 
-            (player
-            |> addGames (stats.[0] |> formatStatString)
-            |> addPA (stats.[1] |> formatStatString)
-            |> addAB (stats.[2] |> formatStatString)
-            |> addRuns (stats.[3] |> formatStatString)
-            |> addHits (stats.[4] |> formatStatString)
-            |> add2B (stats.[5] |> formatStatString)
-            |> add3B (stats.[6] |> formatStatString)
-            |> addHR (stats.[7] |> formatStatString)
-            |> addRBI (stats.[8] |> formatStatString)
-            |> addSB (stats.[9] |> formatStatString)
-            |> addCS (stats.[10] |> formatStatString)
-            |> addBB (stats.[11] |> formatStatString)
-            |> addSO (stats.[12] |> formatStatString)
-            |> addBA (stats.[13] |> formatStatString)
-            |> addOBP (stats.[14] |> formatStatString)
-            |> addSLG (stats.[15] |> formatStatString)
-            |> addOPS (stats.[16] |> formatStatString)
-            |> addOPSplus (stats.[17] |> formatStatString)
-            |> addTB (stats.[18] |> formatStatString)
-            |> addGDP (stats.[19] |> formatStatString)
-            |> addHBP (stats.[20] |> formatStatString)
-            |> addSH (stats.[21] |> formatStatString)
-            |> addSF (stats.[22] |> formatStatString)
-            |> addIBB (stats.[23] |> formatStatString)
-            )
-        | Pitcher _ -> player
+            match player with
+            | Hitter _ -> 
+                (player
+                |> addGames (stats.[0] |> formatStatString)
+                |> addPA (stats.[1] |> formatStatString)
+                |> addAB (stats.[2] |> formatStatString)
+                |> addRuns (stats.[3] |> formatStatString)
+                |> addHits (stats.[4] |> formatStatString)
+                |> add2B (stats.[5] |> formatStatString)
+                |> add3B (stats.[6] |> formatStatString)
+                |> addHR (stats.[7] |> formatStatString)
+                |> addRBI (stats.[8] |> formatStatString)
+                |> addSB (stats.[9] |> formatStatString)
+                |> addCS (stats.[10] |> formatStatString)
+                |> addBB (stats.[11] |> formatStatString)
+                |> addSO (stats.[12] |> formatStatString)
+                |> addBA (stats.[13] |> formatStatString)
+                |> addOBP (stats.[14] |> formatStatString)
+                |> addSLG (stats.[15] |> formatStatString)
+                |> addOPS (stats.[16] |> formatStatString)
+                |> addOPSplus (stats.[17] |> formatStatString)
+                |> addTB (stats.[18] |> formatStatString)
+                |> addGDP (stats.[19] |> formatStatString)
+                |> addHBP (stats.[20] |> formatStatString)
+                |> addSH (stats.[21] |> formatStatString)
+                |> addSF (stats.[22] |> formatStatString)
+                |> addIBB (stats.[23] |> formatStatString)
+                )
+            | Pitcher _ -> player

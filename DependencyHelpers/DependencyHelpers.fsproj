@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>      
+    <Compile Include="Utilities.fs" />      
     <Compile Include="Exceptions.fs" />      
     <Compile Include="HtmlHandler.fs" />
     <Compile Include="DataAccess.fs" />
