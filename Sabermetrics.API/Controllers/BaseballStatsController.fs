@@ -32,7 +32,20 @@ type BaseballStatsController (logger : ILogger<BaseballStatsController>, playerD
     [<ProducesResponseType(StatusCodes.Status200OK)>]
     [<ProducesResponseType(StatusCodes.Status404NotFound)>]
     member this.GetStatsForPlayer (playerID:string):IActionResult=
-        let res = getPlayerStats this.Url playerID
-        match res with
-        | Result.Ok player -> OkObjectResult() :> IActionResult
-        | Result.Error e -> BadRequestResult() :> IActionResult
+        let playerExists = this.PlayerDataAccess.PlayerExists (PlayerID playerID)
+        match playerExists with
+        | Result.Ok null
+        | Error _ ->
+            let res = getPlayerStats this.Url this.PlayerDataAccess Website playerID
+            match res with
+            | Result.Ok player -> OkObjectResult(player) :> IActionResult
+            | Result.Error error -> BadRequestObjectResult(error) :> IActionResult
+        | Result.Ok _ ->
+            try
+                this.PlayerDataAccess.GetStatsForHitter (PlayerID playerID)
+                |> function
+                | Result.Ok player -> OkObjectResult(player) :> IActionResult
+                | Result.Error error -> BadRequestObjectResult(error) :> IActionResult
+            with
+            | error -> BadRequestObjectResult(error) :> IActionResult
+        

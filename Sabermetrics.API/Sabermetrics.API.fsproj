@@ -5,6 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="baseball.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Compile Include="Stats.fs" />
     <Compile Include="Controllers\BaseballStatsController.fs" />
     <Compile Include="Startup.fs" />
