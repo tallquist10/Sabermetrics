@@ -39,11 +39,11 @@ module BaseballDataCollector =
             | Hitter h -> doc |> (tryGetHtmlSections "#batting_standard tfoot tr")
             | Pitcher p -> doc |> (tryGetHtmlSections "#pitching_standard tfoot tr")
 
-        let tryGetPlayerStats (doc:HtmlDocument) player =
+        let tryGetPlayerStats (doc:HtmlDocument) datasource player =
             let updateStatsForPlayer (stats: string list) player =
                 match player with
-                | Hitter _ -> Result.Ok (updateStats stats player)
-                | Pitcher _ -> Result.Ok (updateStats [] player)
+                | Hitter _ -> Result.Ok (updateStats stats datasource player)
+                | Pitcher _ -> Result.Ok (updateStats [] datasource player)
 
             let playerWithStats = 
                 let statResult = tryGatherPlayerStats doc player
@@ -59,22 +59,33 @@ module BaseballDataCollector =
                 | Result.Error e -> Result.Error e
             playerWithStats
 
-        let getPlayerStats url playerId =
+        let tryInsertPlayerIntoDatabase (da:IPlayerDataAccess) player =
+            da.InsertPlayerStats player
+            |> Result.bind (fun _ -> Result.Ok player)
+
+        let tryGetPlayerStatsFromDatabase (da:IPlayerDataAccess) player =
+            match player with
+            | Hitter hitter -> da.GetStatsForHitter (PlayerID hitter.ID)
+            | Pitcher pitcher -> da.GetStatsForPitcher (PlayerID pitcher.ID)
+
+        let getPlayerStats url da datasource playerId =
             let doc = tryGetPlayerPage url playerId
             match doc with
             | Result.Ok webpage ->
                 webpage
                 |> tryGetPlayerName playerId
                 |> Result.bind (tryCreatePlayer playerId)
-                |> Result.bind (tryGetPlayerStats webpage)
+                |> Result.bind (tryGetPlayerStats webpage datasource)
+                |> Result.bind (tryInsertPlayerIntoDatabase da)
+                |> Result.bind (tryGetPlayerStatsFromDatabase da)
             | Result.Error e -> Result.Error e
 
 
     module OldAPI =
         let getPlayerPage url player =
             match player with
-            | Result.Ok (Hitter h) -> getSite (sprintf "%s/%s" url h.Page)
-            | Result.Ok (Pitcher p) -> getSite (sprintf "%s/%s" url p.Page)
+            | Result.Ok (Hitter h) -> getSite (sprintf "%s/%s" url h.ID)
+            | Result.Ok (Pitcher p) -> getSite (sprintf "%s/%s" url p.ID)
             | Result.Error e -> Result.Error e
 
         let createPlayer (node: HtmlNode) =
@@ -105,17 +116,17 @@ module BaseballDataCollector =
         let playerExistsinDatabase (da:PlayerDataAccess.IPlayerDataAccess) player =
             match player with
             | Result.Ok (Hitter hitter) -> 
-                    match da.PlayerExists (PlayerID hitter.Page) with
+                    match da.PlayerExists (PlayerID hitter.ID) with
                     | Result.Ok res -> res |> Option.ofObj |> Option.isSome
                     | Result.Error _ -> false
             | Result.Ok (Pitcher _) -> false 
             | Result.Error _ -> false
 
         let getStats url player =
-            let updateStatsForPlayer (stats: string list) player =
+            let updateStatsForPlayer (stats: string list) datasource player =
                 match player with
-                | Hitter _ -> Result.Ok (updateStats stats player)
-                | Pitcher _ -> Result.Ok (updateStats [] player)
+                | Hitter _ -> Result.Ok (updateStats stats datasource player)
+                | Pitcher _ -> Result.Ok (updateStats [] datasource player)
 
             let playerWithStats = 
                 let statResult = gatherStats url player
@@ -126,7 +137,7 @@ module BaseballDataCollector =
                     let careerNumbers = careerStats |> List.map (fun html -> 
                         HtmlNodeExtensions.InnerText html)
                     let convertedStats = careerNumbers
-                    player |> Result.bind (updateStatsForPlayer convertedStats)
+                    player |> Result.bind (updateStatsForPlayer convertedStats Website)
                 | Result.Error e -> Result.Error (FailedWebRequestException (sprintf "Unable to get stats from web"))
             playerWithStats
 
