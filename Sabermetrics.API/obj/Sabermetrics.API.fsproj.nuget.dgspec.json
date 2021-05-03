@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ctall\\Code Projects\\DotNet\\sabermetrics\\Sabermetrics\\BaseballSabermetrics\\BaseballSabermetrics.fsproj": {}
+    "C:\\Users\\ctall\\Code Projects\\DotNet\\sabermetrics\\Sabermetrics\\Sabermetrics.API\\Sabermetrics.API.fsproj": {}
   },
   "projects": {
-    "C:\\Users\\ctall\\Code Projects\\DotNet\\sabermetrics\\Sabermetrics\\BaseballSabermetrics\\BaseballSabermetrics.fsproj": {
+    "C:\\Users\\ctall\\Code Projects\\DotNet\\sabermetrics\\Sabermetrics\\Sabermetrics.API\\Sabermetrics.API.fsproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ctall\\Code Projects\\DotNet\\sabermetrics\\Sabermetrics\\BaseballSabermetrics\\BaseballSabermetrics.fsproj",
-        "projectName": "BaseballSabermetrics",
-        "projectPath": "C:\\Users\\ctall\\Code Projects\\DotNet\\sabermetrics\\Sabermetrics\\BaseballSabermetrics\\BaseballSabermetrics.fsproj",
+        "projectUniqueName": "C:\\Users\\ctall\\Code Projects\\DotNet\\sabermetrics\\Sabermetrics\\Sabermetrics.API\\Sabermetrics.API.fsproj",
+        "projectName": "Sabermetrics.API",
+        "projectPath": "C:\\Users\\ctall\\Code Projects\\DotNet\\sabermetrics\\Sabermetrics\\Sabermetrics.API\\Sabermetrics.API.fsproj",
         "packagesPath": "C:\\Users\\ctall\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ctall\\Code Projects\\DotNet\\sabermetrics\\Sabermetrics\\BaseballSabermetrics\\obj\\",
+        "outputPath": "C:\\Users\\ctall\\Code Projects\\DotNet\\sabermetrics\\Sabermetrics\\Sabermetrics.API\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\",
@@ -41,19 +41,9 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "dependencies": {
-            "EPPlus": {
-              "target": "Package",
-              "version": "[4.5.3.3, )",
-              "generatePathProperty": true
-            },
             "FSharp.Core": {
               "target": "Package",
               "version": "[5.0.0, )",
-              "generatePathProperty": true
-            },
-            "FSharp.Data": {
-              "target": "Package",
-              "version": "[3.3.3, )",
               "generatePathProperty": true
             }
           },
@@ -68,6 +58,9 @@
           "assetTargetFallback": true,
           "warn": true,
           "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }

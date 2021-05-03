@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>      
+    <Compile Include="Utilities.fs" />      
+    <Compile Include="Exceptions.fs" />      
+    <Compile Include="HtmlHandler.fs" />
+    <Compile Include="DataAccess.fs" />
+    <Compile Include="ExcelExport.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EPPlus" Version="4.5.3.3" />
+    <PackageReference Include="FSharp.Data" Version="3.3.3" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="5.0.4" />
+  </ItemGroup>
+
+</Project>
