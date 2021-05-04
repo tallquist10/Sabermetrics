@@ -56,7 +56,7 @@ module PlayerDataAccess =
     type IPlayerDataAccess =
         abstract member Connection: SqliteConnection
         abstract member PlayerExists: PlayerID -> Result<obj,Exception>
-        abstract member InsertPlayerStats: Player -> Result<obj,Exception>
+        abstract member InsertPlayerStats: Player -> Result<unit,Exception>
         abstract member GetStatsForHitter: PlayerID -> Result<Player,Exception>
         abstract member GetStatsForPitcher: PlayerID -> Result<Player,Exception>
 
@@ -97,13 +97,14 @@ module PlayerDataAccess =
             |> addParameter "@SF" hitter.SF
             |> addParameter "@IBB" hitter.IBB
             |> executeScalar
+            |> ignore
             |> Result.Ok
         with
         | e -> Result.Error (SqliteException e.Message)
 
     let insertPitcherStats (connection: SqliteConnection) (pitcher: Pitcher) =
         let command = connection.CreateCommand()
-        Result.Ok ("" :> obj)
+        Result.Ok ()
 
 
     let getHitterStats (connection: SqliteConnection) (PlayerID id) =

@@ -36,7 +36,7 @@ type BaseballStatsController (logger : ILogger<BaseballStatsController>, playerD
         match playerExists with
         | Result.Ok null
         | Error _ ->
-            let res = SinglePlayer.getPlayerStats this.Url this.PlayerDataAccess Website playerID
+            let res = SinglePlayer.getPlayerStatsFromWebsite this.Url this.PlayerDataAccess playerID
             match res with
             | Result.Ok player -> OkObjectResult(player) :> IActionResult
             | Result.Error error -> BadRequestObjectResult(error) :> IActionResult
@@ -55,8 +55,13 @@ type BaseballStatsController (logger : ILogger<BaseballStatsController>, playerD
     [<HttpGet("all")>]
     [<ProducesResponseType(StatusCodes.Status200OK)>]
     [<ProducesResponseType(StatusCodes.Status404NotFound)>]
-    member this.GetStatsForAllPlayers():IActionResult =
-        MultiplePlayers.tryGetLetterPage this.Url 'a'
-        |> Result.bind (MultiplePlayers.tryGetPlayersForLetter)
-        |> (fun nodes -> OkObjectResult(nodes) :> IActionResult)
+    member this.StoreStatsForAllPlayers():IActionResult =
+        try
+            for letter in 'a'..'z' do
+                MultiplePlayers.getStatsForAllPlayersForLetter this.Url this.PlayerDataAccess Website letter
+                |> ignore
+            OkResult() :> IActionResult 
+        with
+        | e -> (BadRequestObjectResult(e) :> IActionResult)
+        
 

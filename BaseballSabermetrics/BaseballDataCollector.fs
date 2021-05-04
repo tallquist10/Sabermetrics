@@ -9,6 +9,7 @@ module BaseballDataCollector =
     open Sabermetrics.Dependencies.WebWorker
     open Stats
     open FSharp.Data
+    open FSharpPlus
     open Domain
 
     module NewAPI =
@@ -68,20 +69,29 @@ module BaseballDataCollector =
                 match player with
                 | Hitter hitter -> da.GetStatsForHitter (PlayerID hitter.ID)
                 | Pitcher pitcher -> da.GetStatsForPitcher (PlayerID pitcher.ID)
+                
 
-            let getPlayerStats url da datasource playerId =
+            let getPlayerStatsFromWebsite url da playerId =
                 let doc = tryGetPlayerPage url playerId
                 match doc with
                 | Result.Ok webpage ->
-                    webpage
-                    |> tryGetPlayerName playerId
-                    |> Result.bind (tryCreatePlayer playerId)
-                    |> Result.bind (tryGetPlayerStats webpage datasource)
+                    let player =
+                        webpage
+                        |> tryGetPlayerName playerId
+                        |> Result.bind (tryCreatePlayer playerId)
+                        |> Result.bind (tryGetPlayerStats webpage Website)
+                    player 
                     |> Result.bind (tryInsertPlayerIntoDatabase da)
-                    |> Result.bind (tryGetPlayerStatsFromDatabase da)
+                    |> ignore
+
+                    player
                 | Result.Error e -> Result.Error e
-        
+
+            let getPlayerStatsFromDatabase da playerId =
+                tryGetPlayerStatsFromDatabase da playerId
+
         module MultiplePlayers =
+            open System.Text.RegularExpressions
             let tryGetLetterPage url letter =
                 try
                     let players = getSite (sprintf "%s/players/%c/" url letter)
@@ -97,6 +107,34 @@ module BaseballDataCollector =
                     playerList
                 with
                 | e -> Result.Error (FailedWebRequestException (sprintf "Failed to extract list of players for letter '%c'" (Char.ToUpper letterPage.Letter)))
+
+            let tryGetPlayerPageFromNode node =
+                let name = HtmlNodeExtensions.InnerText node
+                let page = HtmlNodeExtensions.AttributeValue (node, "href")
+                getSite (sprintf "https://www.baseball-reference.com%s" page)
+
+            let tryGetPlayerIDFromNode (node: HtmlNode) =
+                let name = HtmlNodeExtensions.InnerText node
+                let linkString = HtmlNodeExtensions.AttributeValue (node, "href")
+                let getID = Regex("/players/[a-z]/(?<id>\w+).shtml")
+                let playerIDMatch = getID.Match(linkString)
+                let playerID = playerIDMatch.Groups.[1].ToString()
+                playerID
+
+            let tryGetPlayerStatsFromNode url da (node:HtmlNode) =
+                node
+                |> tryGetPlayerIDFromNode
+                |> SinglePlayer.getPlayerStatsFromWebsite url da
+                
+
+            let getStatsForAllPlayersForLetter url da datasource letter =
+                letter
+                |> tryGetLetterPage url
+                |> Result.bind tryGetPlayersForLetter
+                |> function
+                   | Result.Ok nodes -> List.map (tryGetPlayerStatsFromNode url da) nodes
+                   | Result.Error error -> [Result.Error error]
+                
 
     module OldAPI =
         let getPlayerPage url player =
