@@ -1,15 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26124.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "BaseballSabermetrics", "BaseballSabermetrics\BaseballSabermetrics.fsproj", "{252AA007-B389-4EB6-BD59-8C1E1C5B37A5}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "BaseballSabermetrics", "BaseballSabermetrics\BaseballSabermetrics.fsproj", "{252AA007-B389-4EB6-BD59-8C1E1C5B37A5}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "DependencyHelpers", "DependencyHelpers\DependencyHelpers.fsproj", "{597098A7-E3BD-4C66-B8AA-70F37A75A808}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "DependencyHelpers", "DependencyHelpers\DependencyHelpers.fsproj", "{597098A7-E3BD-4C66-B8AA-70F37A75A808}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Sabermetrics.API", "Sabermetrics.API\Sabermetrics.API.fsproj", "{1F84EEA0-2EAC-4792-AAB9-2D118DE9C3FF}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Sabermetrics.API", "Sabermetrics.API\Sabermetrics.API.fsproj", "{1F84EEA0-2EAC-4792-AAB9-2D118DE9C3FF}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "SabermetricsTests", "SabermetricsTests\SabermetricsTests.fsproj", "{F1F552E4-8EF5-41CC-9D50-9196FDF8C47A}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "SabermetricsTests", "SabermetricsTests\SabermetricsTests.fsproj", "{F1F552E4-8EF5-41CC-9D50-9196FDF8C47A}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "BasketballSabermetrics", "BasketballSabermetrics\BasketballSabermetrics.fsproj", "{F2945A9A-917A-492D-8024-3E1DF49BC0E2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,9 +21,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{252AA007-B389-4EB6-BD59-8C1E1C5B37A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -72,5 +71,23 @@ Global
 		{F1F552E4-8EF5-41CC-9D50-9196FDF8C47A}.Release|x64.Build.0 = Release|Any CPU
 		{F1F552E4-8EF5-41CC-9D50-9196FDF8C47A}.Release|x86.ActiveCfg = Release|Any CPU
 		{F1F552E4-8EF5-41CC-9D50-9196FDF8C47A}.Release|x86.Build.0 = Release|Any CPU
+		{F2945A9A-917A-492D-8024-3E1DF49BC0E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2945A9A-917A-492D-8024-3E1DF49BC0E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2945A9A-917A-492D-8024-3E1DF49BC0E2}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F2945A9A-917A-492D-8024-3E1DF49BC0E2}.Debug|x64.Build.0 = Debug|Any CPU
+		{F2945A9A-917A-492D-8024-3E1DF49BC0E2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F2945A9A-917A-492D-8024-3E1DF49BC0E2}.Debug|x86.Build.0 = Debug|Any CPU
+		{F2945A9A-917A-492D-8024-3E1DF49BC0E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2945A9A-917A-492D-8024-3E1DF49BC0E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2945A9A-917A-492D-8024-3E1DF49BC0E2}.Release|x64.ActiveCfg = Release|Any CPU
+		{F2945A9A-917A-492D-8024-3E1DF49BC0E2}.Release|x64.Build.0 = Release|Any CPU
+		{F2945A9A-917A-492D-8024-3E1DF49BC0E2}.Release|x86.ActiveCfg = Release|Any CPU
+		{F2945A9A-917A-492D-8024-3E1DF49BC0E2}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {997DC4B8-D866-478E-8AD5-33E3FDA3AC3A}
 	EndGlobalSection
 EndGlobal
