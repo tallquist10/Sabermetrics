@@ -16,7 +16,9 @@
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <PkgMicrosoft_Data_Sqlite Condition=" '$(PkgMicrosoft_Data_Sqlite)' == '' ">C:\Users\ctall\.nuget\packages\microsoft.data.sqlite\5.0.4</PkgMicrosoft_Data_Sqlite>
     <PkgFSharp_Core Condition=" '$(PkgFSharp_Core)' == '' ">C:\Users\ctall\.nuget\packages\fsharp.core\5.0.0</PkgFSharp_Core>
+    <PkgFSharpPlus Condition=" '$(PkgFSharpPlus)' == '' ">C:\Users\ctall\.nuget\packages\fsharpplus\1.1.7</PkgFSharpPlus>
     <PkgFSharp_Data Condition=" '$(PkgFSharp_Data)' == '' ">C:\Users\ctall\.nuget\packages\fsharp.data\3.3.3</PkgFSharp_Data>
     <PkgEPPlus Condition=" '$(PkgEPPlus)' == '' ">C:\Users\ctall\.nuget\packages\epplus\4.5.3.3</PkgEPPlus>
   </PropertyGroup>
