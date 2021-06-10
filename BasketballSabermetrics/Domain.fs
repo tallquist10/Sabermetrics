@@ -30,23 +30,23 @@ module Domain =
         ID: string
         G: int<G>
         GS: int<GS>
-        MP: float<MP>
-        FG: float<FG>
-        FGA: float<FGA>
-        Threes: float<Threes>
-        ThreesAttempted: float<ThreesAttempted>
-        Twos: float<Twos>
-        TwosAttempted: float<TwosAttempted>
-        FT: float<FT>
-        FTA: float<FTA>
-        ORB: float<ORB>
-        DRB: float<DRB>
-        AST: float<AST>
-        STL: float<STL>
-        BLK: float<BLK>
-        TO: float<TO>
-        PF: float<PF>
-        PTS: float<PTS>
+        MP: int<MP>
+        FG: int<FG>
+        FGA: int<FGA>
+        Threes: int<Threes>
+        ThreesAttempted: int<ThreesAttempted>
+        Twos: int<Twos>
+        TwosAttempted: int<TwosAttempted>
+        FT: int<FT>
+        FTA: int<FTA>
+        ORB: int<ORB>
+        DRB: int<DRB>
+        AST: int<AST>
+        STL: int<STL>
+        BLK: int<BLK>
+        TO: int<TO>
+        PF: int<PF>
+        PTS: int<PTS>
     }
 
     type DataSource =
@@ -58,23 +58,23 @@ module Domain =
         ID = id
         G = 0<G>
         GS = 0<GS>
-        MP = 0.0<MP>
-        FG = 0.0<FG>
-        FGA = 0.0<FGA>
-        Threes = 0.0<Threes>
-        ThreesAttempted = 0.0<ThreesAttempted>
-        Twos = 0.0<Twos>
-        TwosAttempted = 0.0<TwosAttempted>
-        FT = 0.0<FT>
-        FTA = 0.0<FTA>
-        ORB = 0.0<ORB>
-        DRB = 0.0<DRB>
-        AST = 0.0<AST>
-        STL = 0.0<STL>
-        BLK = 0.0<BLK>
-        TO = 0.0<TO>
-        PF = 0.0<PF>
-        PTS = 0.0<PTS>
+        MP = 0<MP>
+        FG = 0<FG>
+        FGA = 0<FGA>
+        Threes = 0<Threes>
+        ThreesAttempted = 0<ThreesAttempted>
+        Twos = 0<Twos>
+        TwosAttempted = 0<TwosAttempted>
+        FT = 0<FT>
+        FTA = 0<FTA>
+        ORB = 0<ORB>
+        DRB = 0<DRB>
+        AST = 0<AST>
+        STL = 0<STL>
+        BLK = 0<BLK>
+        TO = 0<TO>
+        PF = 0<PF>
+        PTS = 0<PTS>
     }
 
 module Stats =
@@ -86,55 +86,55 @@ module Stats =
         { player with GS = gs |> int |> (*) 1<GS> }
 
     let addMP (mp: string) player =
-        { player with MP = mp |> float |> (*) 1.0<MP>}
+        { player with MP = mp |> int |> (*) 1<MP>}
        
     let addFG (fg: string) player =
-         { player with FG = fg |> float |> (*) 1.0<FG>}
+         { player with FG = fg |> int |> (*) 1<FG>}
 
     let addFGA (fga: string) player =
-        { player with FGA = fga |> float |> (*) 1.0<FGA>}
+        { player with FGA = fga |> int |> (*) 1<FGA>}
 
     let add3P (threes: string) player =
-        { player with Threes = threes |> float |> (*) 1.0<Threes>}
+        { player with Threes = threes |> int |> (*) 1<Threes>}
 
     let add3PA (threesAttempted: string) player =
-        { player with ThreesAttempted = threesAttempted |> float |> (*) 1.0<ThreesAttempted>}
+        { player with ThreesAttempted = threesAttempted |> int |> (*) 1<ThreesAttempted>}
 
     let add2P (twos: string) player =
-        { player with Twos = twos |> float |> (*) 1.0<Twos>}
+        { player with Twos = twos |> int |> (*) 1<Twos>}
 
     let add2PA (twosAttempted: string) player =
-        { player with TwosAttempted = twosAttempted |> float |> (*) 1.0<TwosAttempted>}
+        { player with TwosAttempted = twosAttempted |> int |> (*) 1<TwosAttempted>}
 
     let addFT (ft: string) player =
-        { player with FT = ft |> float |> (*) 1.0<FT>}
+        { player with FT = ft |> int |> (*) 1<FT>}
 
     let addFTA (fta: string) player =
-        { player with FTA = fta |> float |> (*) 1.0<FTA>}
+        { player with FTA = fta |> int |> (*) 1<FTA>}
 
     let addORB (orb: string) player =
-        { player with ORB = orb |> float |> (*) 1.0<ORB>}
+        { player with ORB = orb |> int |> (*) 1<ORB>}
 
     let addDRB (drb: string) player =
-        { player with DRB = drb |> float |> (*) 1.0<DRB>}
+        { player with DRB = drb |> int |> (*) 1<DRB>}
 
     let addAST (ast: string) player =
-        { player with AST = ast |> float |> (*) 1.0<AST>}
+        { player with AST = ast |> int |> (*) 1<AST>}
 
     let addSTL (stl: string) player =
-        { player with STL = stl |> float |> (*) 1.0<STL>}
+        { player with STL = stl |> int |> (*) 1<STL>}
 
     let addBLK (blk: string) player =
-        { player with BLK = blk |> float |> (*) 1.0<BLK>}
+        { player with BLK = blk |> int |> (*) 1<BLK>}
 
     let addTO (tos: string) player =
-        { player with TO = tos |> float |> (*) 1.0<TO>}
+        { player with TO = tos |> int |> (*) 1<TO>}
 
     let addPF (pf: string) player =
-        { player with PF = pf |> float |> (*) 1.0<PF>}
+        { player with PF = pf |> int |> (*) 1<PF>}
 
     let addPTS (pts: string) player =
-        { player with PTS = pts |> float |> (*) 1.0<PTS>}
+        { player with PTS = pts |> int |> (*) 1<PTS>}
 
     let formatStatString stat = 
         match stat with
