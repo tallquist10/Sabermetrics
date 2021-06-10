@@ -132,15 +132,9 @@ module PlayerDataAccess =
         Result.Ok (createPitcher "Me" id)
 
     let GetInstance database = 
-        let connection =
-            let connStrBuilder = new SqliteConnectionStringBuilder()
-            connStrBuilder.DataSource <- database
-            let conn = new SqliteConnection(connStrBuilder.ConnectionString)
-            conn.Open()
-            conn
         { 
             new IPlayerDataAccess with
-            member this.Connection = connection
+            member this.Connection = SqliteHelpers.createConnection database
             member this.PlayerExists playerID = playerExists this.Connection playerID
             member this.InsertPlayerStats player = 
                 match player with
