@@ -5,10 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="basketball.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="baseball.db">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Compile Include="Stats.fs" />
+    <Compile Include="Controllers\BasketballStatsController.fs" />
     <Compile Include="Controllers\BaseballStatsController.fs" />
     <Compile Include="Startup.fs" />
     <Compile Include="Program.fs" />
@@ -22,6 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BaseballSabermetrics\BaseballSabermetrics.fsproj" />
+    <ProjectReference Include="..\BasketballSabermetrics\BasketballSabermetrics.fsproj" />
   </ItemGroup>
 
 </Project>
