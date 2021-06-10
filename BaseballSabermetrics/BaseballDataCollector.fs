@@ -9,7 +9,6 @@ module BaseballDataCollector =
     open Sabermetrics.Dependencies.WebWorker
     open Stats
     open FSharp.Data
-    open FSharpPlus
     open Domain
 
     module NewAPI =

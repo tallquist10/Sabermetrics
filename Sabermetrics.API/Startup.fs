@@ -11,7 +11,7 @@ open Microsoft.AspNetCore.Mvc
 open Microsoft.Extensions.Configuration
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Hosting
-open Sabermetrics.Baseball.PlayerDataAccess
+open Sabermetrics
 
 type Startup private () =
     new (configuration: IConfiguration) as this =
@@ -23,7 +23,8 @@ type Startup private () =
         services.AddControllers() |> ignore
         // Register the Swagger generator, defining 1 or more Swagger documents
         services.AddSwaggerGen() |> ignore
-        services.AddSingleton<IPlayerDataAccess>(GetInstance "baseball.db") |> ignore
+        services.AddSingleton<Baseball.PlayerDataAccess.IPlayerDataAccess>(Baseball.PlayerDataAccess.GetInstance "baseball.db") |> ignore
+        services.AddSingleton<Basketball.PlayerDataAccess.IPlayerDataAccess>(Basketball.PlayerDataAccess.GetInstance "basketball.db") |> ignore
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     member this.Configure(app: IApplicationBuilder, env: IWebHostEnvironment) =
