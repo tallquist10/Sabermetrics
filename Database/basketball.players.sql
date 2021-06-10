@@ -1,0 +1,4 @@
+-- SQLite
+CREATE TABLE Players (
+
+)
