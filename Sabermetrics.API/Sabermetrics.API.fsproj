@@ -5,6 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="basketball.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="baseball.db">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
