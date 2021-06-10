@@ -6,6 +6,8 @@
 
   <ItemGroup>
     <Compile Include="Domain.fs" />
+    <Compile Include="BasketballDataAccess.fs" />
+    <Compile Include="BasketballDataCollector.fs" />    
   </ItemGroup>
 
   <ItemGroup>

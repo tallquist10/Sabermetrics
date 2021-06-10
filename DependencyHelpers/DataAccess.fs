@@ -26,3 +26,10 @@ module SqliteHelpers =
 
     let executeReaderAsync (command:SqliteCommand) =
         command.ExecuteReaderAsync()
+
+    let createConnection database =
+        let connStrBuilder = new SqliteConnectionStringBuilder()
+        connStrBuilder.DataSource <- database
+        let conn = new SqliteConnection(connStrBuilder.ConnectionString)
+        conn.Open()
+        conn
